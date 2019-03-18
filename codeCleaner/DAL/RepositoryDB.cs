@@ -28,7 +28,7 @@ namespace codeCleaner.DAL {
                 using (SqlCommandBuilder BLDR = new SqlCommandBuilder(DA)) {
                     BLDR.ConflictOption = ConflictOption.OverwriteChanges;
                     DA.Update(DT);
-                    //MessageBox.Show("Database has been updated successfully!", "Update DB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Database has been updated successfully!", "Update DB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }

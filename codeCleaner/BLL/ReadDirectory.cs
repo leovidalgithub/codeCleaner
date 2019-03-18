@@ -11,12 +11,13 @@ using codeCleaner.ExtensionMethods;
 namespace codeCleaner.BLL {
     public static class ReadDirectory {
         public static string errors;
-        public static List<Files> GetFilesInfo() {            
+        public static List<Files> GetFilesInfo() {
 
             List<Files> allFilesList = new List<Files>();
         
             try {
-                TraverseTreeParallelForEach(@"C:\work\adminsite", (f) => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+                TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+                    //TraverseTreeParallelForEach(@"C:\work\adminsite", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
                     try {
                         FileInfo ff = new FileInfo(f);
                         allFilesList.Add(new Files(ff.FullName,  ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
@@ -84,7 +85,7 @@ namespace codeCleaner.BLL {
                 // synchronously but this could be modified to perform async I/O.
                 try {
                     if (files.Length < procCount) {
-                        foreach (var file in files){
+                        foreach (var file in files) {
                             action(file);
                             fileCount++;
                         }
@@ -113,7 +114,7 @@ namespace codeCleaner.BLL {
                 foreach (string str in subDirs)
                     dirs.Push(str);
             }
-            MessageBox.Show(string.Format("GetFilesInfo() Processed {0} files in {1} milliseconds", fileCount, sw.ElapsedMilliseconds));
+            MessageBox.Show(string.Format("GetFilesInfo() Processed {0} files in {1} milliseconds" + Environment.NewLine + errors, fileCount, sw.ElapsedMilliseconds));
         }
     }
 }
