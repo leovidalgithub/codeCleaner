@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,20 +8,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using codeCleaner.ExtensionMethods;
+using System.Linq;
 
 namespace codeCleaner.BLL {
     public static class ReadDirectory {
         public static string errors;
         public static List<Files> GetFilesInfo() {
 
-            List<Files> allFilesList = new List<Files>();
-        
+            ConcurrentBag<Files> allFiles = new ConcurrentBag<Files>();
             try {
-                TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
-                    //TraverseTreeParallelForEach(@"C:\work\adminsite", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
-                    try {
+                //TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+                    TraverseTreeParallelForEach(@"C:\kibana-6.4.2-windows-x86_64", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+
+                        try {
+                            
                         FileInfo ff = new FileInfo(f);
-                        allFilesList.Add(new Files(ff.FullName,  ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
+                             
+                            allFiles.Add(new Files(ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
                     }
                     catch (FileNotFoundException e) { errors += e.Message; }
                     catch (IOException e) { errors += e.Message; }
@@ -30,7 +34,7 @@ namespace codeCleaner.BLL {
             } catch (ArgumentException e) {
                 errors += @"The directory 'C:\Program Files' does not exist." + e.Message;
             }
-            return allFilesList;
+            return allFiles.ToList();
         }
         public static void TraverseTreeParallelForEach(string root, Action<string> action) {
             //Count of files traversed and timer for diagnostic output

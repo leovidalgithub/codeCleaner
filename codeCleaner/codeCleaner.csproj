@@ -48,7 +48,8 @@
   <ItemGroup>
     <Compile Include="BLL\Compare.cs" />
     <Compile Include="BLL\extension.cs" />
-    <Compile Include="BLL\Files.cs" />
+    <Compile Include="Helpers\DatatableHelpers.cs" />
+    <Compile Include="Models\Files.cs" />
     <Compile Include="BLL\ReadDirectory.cs" />
     <Compile Include="BLL\Utilities.cs" />
     <Compile Include="DAL\RepositoryDB.cs" />

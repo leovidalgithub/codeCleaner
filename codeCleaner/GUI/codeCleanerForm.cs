@@ -8,8 +8,8 @@ using System.Diagnostics;
 
 namespace codeCleaner.GUI {
     public partial class codeCleanerForm : Form {
-        private List<Files> filesList;
-        private DataSet filesDS;
+        private List<Files> CurrentRunFiles;
+        private List<Files> LastRunFiles;
         public codeCleanerForm() {
             InitializeComponent();
         }
@@ -25,16 +25,16 @@ namespace codeCleaner.GUI {
         private void btnReadDirectory_Click(object sender, EventArgs e) {
             var sw = Stopwatch.StartNew();
 
-            this.filesList = new List<Files>();
-            this.filesDS = new DataSet();
+            this.CurrentRunFiles = new List<Files>();
+            this.LastRunFiles = new List<Files>();
 
-            this.filesList = ReadDirectory.GetFilesInfo();
-            this.filesDS = RepositoryDB.GetRepositoriesDS();
+            this.CurrentRunFiles = ReadDirectory.GetFilesInfo();
+            this.LastRunFiles = RepositoryDB.GetRepositoriesDS();
 
-            DataTable DT = Compare.CompareFiles(filesList, filesDS.Tables[RepositoryDB.repositoryName]);
+            List<Files> ChangedFiles = Compare.CompareFiles(this.CurrentRunFiles, this.LastRunFiles);
 
-            RepositoryDB.SaveRpositoryDT(DT);
-            MessageBox.Show(string.Format("*END: Processed {0:n0} files in {1:n0} ms", this.filesList.Count, sw.ElapsedMilliseconds),"CodeCleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            RepositoryDB.SaveRepositoryData(ChangedFiles);
+            MessageBox.Show(string.Format("*END: Processed {0:n0} files in {1:n0} ms", this.CurrentRunFiles.Count, sw.ElapsedMilliseconds),"CodeCleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void codeCleanerForm_Load(object sender, EventArgs e) {
             //var sw = Stopwatch.StartNew();

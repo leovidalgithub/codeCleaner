@@ -8,3 +8,13 @@ C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCle
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleaner.pdb
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleaner.exe
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleaner.pdb
+C:\code\codecleaner\codeCleaner\bin\Debug\codeCleaner.exe.config
+C:\code\codecleaner\codeCleaner\bin\Debug\codeCleaner.exe
+C:\code\codecleaner\codeCleaner\bin\Debug\codeCleaner.pdb
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.csprojAssemblyReference.cache
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.GUI.codeCleanerForm.resources
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.Properties.Resources.resources
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.csproj.GenerateResource.cache
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.csproj.CoreCompileInputs.cache
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.exe
+C:\code\codecleaner\codeCleaner\obj\Debug\codeCleaner.pdb
