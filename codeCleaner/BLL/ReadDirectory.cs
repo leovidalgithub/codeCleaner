@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,13 +12,23 @@ using codeCleaner.ExtensionMethods;
 namespace codeCleaner.BLL {
     public static class ReadDirectory {
         public static string errors;
-        public static List<Files> GetFilesInfo() {
+        public static ConcurrentBag<Files> GetFilesInfo() {
 
-            List<Files> allFilesList = new List<Files>();
-        
+          ConcurrentBag<Files> allFilesList = new ConcurrentBag<Files>();
+            //ConcurrentStack<int> s = new ConcurrentStack<int>();
+            //int[] array = { 50, 100, 4, 84, 12 };
+            //s.PushRange(array);
+            //s.TryPop()
+            //foreach (int item in s)
+            //{
+            //    MessageBox.Show(item.ToString());
+            //}
+            //Application.Exit();
+
             try {
-                TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
-                    //TraverseTreeParallelForEach(@"C:\work\adminsite", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+
+                //TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+                TraverseTreeParallelForEach(@"C:\work\adminsite", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
                     try {
                         FileInfo ff = new FileInfo(f);
                         allFilesList.Add(new Files(ff.FullName,  ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
