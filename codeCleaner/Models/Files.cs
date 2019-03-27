@@ -1,32 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace codeCleaner.BLL {
-    public class Files {
-        private string path;
-        private DateTime created;
-        private DateTime modified;
-        private DateTime accessed;
-        private Single size;
-        private int changes;
-        private bool active;
+    public class Files : IEquatable<Files> {
 
-        public string Path { get => path; set => path = value; }
-        public DateTime Created { get => created; set => created = value; }
-        public DateTime Modified { get => modified; set => modified = value; }
-        public DateTime Accessed { get => accessed; set => accessed = value; }
-        public float Size { get => size; set => size = value; }
-        public int Changes { get => changes; set => changes = value; }
-        public bool Active { get => active; set => active = value; }
+        public int CodeCleanerInfoID { get; set; }
+        public string Path { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public DateTime Accessed { get; set; }
+        public float Size { get; set; }
+        public int Changes { get; set; }
+        public bool Active { get; set; }
 
         public Files() {}
-        public Files(string _path, DateTime _created, DateTime _modified, DateTime _accessed, float _size) {
-            this.path = _path;
-            this.created = _created;
-            this.modified = _modified;
-            this.accessed = _accessed;
-            this.size = _size;
-            this.changes = 0;
-            this.active = true;
+        public Files(int _codeCleanerInfoID, string _path, DateTime _created, DateTime _modified, DateTime _accessed, float _size) {
+            this.CodeCleanerInfoID = _codeCleanerInfoID;
+            this.Path = _path;
+            this.Created = _created;
+            this.Modified = _modified;
+            this.Accessed = _accessed;
+            this.Size = _size;
+            this.Changes = 0;
+            this.Active = true;
+        }
+        /// <summary>
+        /// Overriding Equals Method used by Enumerable.Except & Enumerable.Intersect
+        /// in order to make comparison based on Files.Path<string> Property
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj) {
+            return Equals(obj as Files);
+        }
+        public bool Equals(Files other) {
+            return other != null &&
+                   Path == other.Path;
+        }
+        public override int GetHashCode() {
+            return 467214278 + EqualityComparer<string>.Default.GetHashCode(Path);
         }
     }
 }

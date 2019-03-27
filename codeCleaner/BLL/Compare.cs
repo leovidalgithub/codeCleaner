@@ -1,119 +1,91 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Collections.Concurrent;
 
-namespace codeCleaner.BLL
-{
-    public static class Compare
-    {
-        public static List<Files> CompareFiles(List<Files> CurrentRunFiles, List<Files> PreviousRunPaths)
-        {
-            List<string> errors = new List<string>();
+namespace codeCleaner.BLL {
+
+    public static class Compare {
+        public static List<Files> CompareFiles1(List<Files> CurrentRunFiles, List<Files> PreviousRunFiles) {
             List<Files> ChangedFiles = new List<Files>();
-            Dictionary<string, Files> previousRun = PreviousRunPaths.ToDictionary(x => x.Path, x => x);
-            foreach(var currentFile in CurrentRunFiles)
-            {
-                if (previousRun.ContainsKey(currentFile.Path))
-                {
-                    //file already existed in the last run
-                    Files LastRunFile = previousRun[currentFile.Path];
-                    if (CheckForDateChanges(LastRunFile,currentFile)) //The dates have changed
-                    {
+            Dictionary<string, Files> previousFiles = PreviousRunFiles.ToDictionary(file => file.Path, file => file);
+            List<Files> previousMissingFiles = PreviousRunFiles.Except(CurrentRunFiles)
+                                                .Where(file => file.Active == true)
+                                                .Select(file => { file.Active = false;
+                                                                  file.Changes = 0;
+                                                                  return file; }).ToList();
 
-                        //Add some logic with LastRunFile & currentFile here, probably.
+            foreach (Files currentFile in CurrentRunFiles) {
+                if (previousFiles.ContainsKey(currentFile.Path)) {
+                    Files previousFile = previousFiles[currentFile.Path];
+                    if (!previousFile.Active || CheckForDateChanges(previousFile, currentFile)) {
+                        if (previousFile.Active) currentFile.Changes = ++previousFile.Changes;
                         ChangedFiles.Add(currentFile);
                     }
-                }else
-                {
-                    //This file was not found in the previous run
+                } else { 
                     ChangedFiles.Add(currentFile);
                 }
             }
+            ChangedFiles.AddRange(previousMissingFiles);
             return ChangedFiles;
-            //try
-            //{
-            //    Parallel.ForEach(CurrentRunFiles, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (file) =>
-            //    {
-            //        try
-            //        {
+        }
+        public static List<Files> CompareFiles2(List<Files> CurrentRunFiles, List<Files> PreviousRunFiles) {
+            List<Files> ChangedFiles = new List<Files>();
+            List<Files> commonFiles = CurrentRunFiles.Intersect(PreviousRunFiles).ToList();
+            List<Files> newFiles = CurrentRunFiles.Except(PreviousRunFiles).ToList();
+            Dictionary<string, Files> previousFiles = PreviousRunFiles.ToDictionary(file => file.Path, file => file);
+            List<Files> previousMissingFiles = PreviousRunFiles.Except(CurrentRunFiles)
+                                                .Where(file => file.Active == true)
+                                                .Select(file => {
+                                                    file.Active = false;
+                                                    file.Changes = 0;
+                                                    return file;
+                                                }).ToList();
 
-            //            //List of my past run
-            //            //Current run list
-
-            //            // from old in PastRunList
-            //            // from new in NewRunlist
-            //            lock (PreviousRunPaths)
-            //            {
-            //                var DR = PreviousRunPaths.AsEnumerable().SingleOrDefault(x => (string)x["path"] == file.Path);
-            //                if (DR is null)
-            //                {
-            //                    DataRow new_DR = PreviousRunPaths.NewRow();
-            //                    new_DR["path"] = file.Path;
-            //                    new_DR["created"] = file.Created;
-            //                    new_DR["modified"] = file.Modified;
-            //                    new_DR["accessed"] = file.Accessed;
-            //                    new_DR["size"] = file.Size;
-            //                    new_DR["changes"] = file.Changes;
-            //                    new_DR["active"] = file.Active;
-            //                    PreviousRunPaths.Rows.Add(new_DR);
-            //                }
-            //                else
-            //                {
-            //                    if (AnyChange(file, DR)) DR["changes"] = (int)DR["changes"] + 1;
-            //                    DR["created"] = file.Created;
-            //                    DR["modified"] = file.Modified;
-            //                    DR["accessed"] = file.Accessed;
-            //                    DR["size"] = file.Size;
-            //                    DR["active"] = true;
-            //                }
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            errors.Add("IN - " + ex.Message + "-" + file.Path);
-            //        }
-            //    });
-
-            //}
-            //catch (AggregateException ex)
-            //{
-            //    errors.Add("OUT AggregateException - " + ex.Message);
-            //}
-            //catch (NullReferenceException ex)
-            //{
-            //    errors.Add("OUT NullReferenceException - " + ex.Message);
-            //}
-            //catch (Exception ex)
-            //{
-            //    errors.Add("OUT Exception - " + ex.Message);
-            //}
-
-            //if (errors.Count > 0)
-            //{
-            //    MessageBox.Show("Errors = " + errors.Count);
-            //    foreach (string er in errors)
-            //    {
-            //        MessageBox.Show(er);
-            //    }
-            //}
-            //return PreviousRunPaths;
+            foreach (Files commonFile in commonFiles) {
+                Files previousFile = previousFiles[commonFile.Path];
+                //Files LastRunFile = PreviousRunFiles.Find(previousFile => previousFile.Path == commonFile.Path);
+                if (!previousFile.Active || CheckForDateChanges(commonFile, previousFile)) {
+                    if (previousFile.Active) commonFile.Changes = ++previousFile.Changes;
+                    ChangedFiles.Add(commonFile);
+                }
+            }
+            ChangedFiles.AddRange(newFiles);
+            ChangedFiles.AddRange(previousMissingFiles);
+            return ChangedFiles;
         }
 
-        //private static bool AnyChange(Files _file, DataRow _DR)
-        //{
-        //    return DateTime.Compare(_file.Accessed, (DateTime)_DR["accessed"]) != 0 ||
-        //           DateTime.Compare(_file.Modified, (DateTime)_DR["modified"]) != 0;
-        //}
-        private static bool CheckForDateChanges (Files FirstFile,Files SecondFile)
-        {
+        private static bool CheckForDateChanges(Files FirstFile, Files SecondFile) {
             return DateTime.Compare(FirstFile.Accessed, SecondFile.Accessed) != 0 ||
                    DateTime.Compare(FirstFile.Modified, SecondFile.Modified) != 0;
         }
     }
 }
 
-//Collection was modified; enumeration operation might not execute."
+//List<Files> l1 = new List<Files>();
+//List<Files> l2 = new List<Files>();
+//l1.AddRange(new[] {
+//    new Files(1, "a", 1),
+//    new Files(1, "b", 2),
+//    new Files(1, "c", 3),
+//    new Files(1, "d", 4),
+//    new Files(1, "e", 5)
+//});
+//l2.AddRange(new[] {
+//    new Files(1, "a", 6),
+//    new Files(1, "b", 7),
+//    new Files(1, "f", 8),
+//    new Files(1, "g", 9),
+//    new Files(1, "e", 10)
+//});
+////var testz = oldfilez.Where(x => newfilez.ContainsKey(x.Key)).Select(x => x.Value).ToList();
+////var testz2 = newfilez.Where(x => !oldfilez.ContainsKey(x.Key)).Select(x => x.Value).ToList();
+//var dic7 = l1.Intersect(l2).ToList();
+//var dic17 = l2.Except(l1).ToList();
+//var dic2 = dic7.Zip(dic17, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+//string result = string.Empty;
+//foreach (var item in dic7) 
+//    result += item.Path + " " + item.Size + Environment.NewLine;
+//result += " -------------------------------- " + Environment.NewLine;
+//foreach (var item in dic17)
+//    result += item.Path + " " + item.Size + Environment.NewLine;
+//System.Windows.Forms.MessageBox.Show(result);

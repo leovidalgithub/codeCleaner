@@ -1,45 +1,51 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data;
 using System.IO;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using codeCleaner.ExtensionMethods;
 using System.Linq;
+using codeCleaner.ExtensionMethods;
+using codeCleaner.DAL;
 
 namespace codeCleaner.BLL {
     public static class ReadDirectory {
-        public static string errors;
+        private static List<string> errors = new List<string>();
+
         public static List<Files> GetFilesInfo() {
-
             ConcurrentBag<Files> allFiles = new ConcurrentBag<Files>();
-            try {
-                //TraverseTreeParallelForEach(AppDomain.CurrentDomain.BaseDirectory, f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
-                    TraverseTreeParallelForEach(@"C:\kibana-6.4.2-windows-x86_64", f => { //To be used later when done <AppDomain.CurrentDomain.BaseDirectory>
+            DataTable CodeCleanerInfo = new DataTable();
+            CodeCleanerInfo = RepositoryDB.GetCodeCleanerInfoDB();
 
+            foreach (DataRow item in CodeCleanerInfo.Rows) {
+                int CodeCleanerInfoID = Int32.Parse(item["ID"].ToString().Trim());
+                string SearchRootFolder = item["SearchRootFolder"].ToString().Trim();
+
+                try {
+                    TraverseTreeParallelForEach(@SearchRootFolder, f => { 
                         try {
-                            
-                        FileInfo ff = new FileInfo(f);
-                             
-                            allFiles.Add(new Files(ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
-                    }
-                    catch (FileNotFoundException e) { errors += e.Message; }
-                    catch (IOException e) { errors += e.Message; }
-                    catch (UnauthorizedAccessException e) { errors += e.Message;  }
-                    catch (SecurityException e) { errors += e.Message;  }
-                });
-            } catch (ArgumentException e) {
-                errors += @"The directory 'C:\Program Files' does not exist." + e.Message;
+                            FileInfo ff = new FileInfo(f);
+                            allFiles.Add(new Files(CodeCleanerInfoID, ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
+                        }
+                        catch (FileNotFoundException e) { errors.Add(e.Message); }
+                        catch (IOException e) { errors.Add(e.Message); }
+                        catch (UnauthorizedAccessException e) { errors.Add(e.Message); }
+                        catch (SecurityException e) { errors.Add(e.Message); }
+                    });                                         }
+                catch (ArgumentException e) {
+                    errors.Add("Directory " + @SearchRootFolder + " does not exist. " + e.Message);
+                }
             }
             return allFiles.ToList();
         }
+
         public static void TraverseTreeParallelForEach(string root, Action<string> action) {
             //Count of files traversed and timer for diagnostic output
             int fileCount = 0;
-            var sw = Stopwatch.StartNew();
+            //var sw = Stopwatch.StartNew();
 
             // Determine whether to parallelize file processing on each folder based on processor count.
             int procCount = Environment.ProcessorCount;
@@ -62,25 +68,25 @@ namespace codeCleaner.BLL {
                 }
                 // Thrown if we do not have discovery permission on the directory.
                 catch (UnauthorizedAccessException e) {
-                    errors += e.Message;
+                    errors.Add(e.Message);
                     continue;
                 }
                 // Thrown if another process has deleted the directory after we retrieved its name.
                 catch (DirectoryNotFoundException e) {
-                    errors += e.Message;
+                    errors.Add(e.Message);
                     continue;
                 }
 
                 try {
                     files = Directory.GetFiles(currentDir);
                 } catch (UnauthorizedAccessException e) {
-                    errors += e.Message;
+                    errors.Add(e.Message);
                     continue;
                 } catch (DirectoryNotFoundException e) {
-                    errors += e.Message;
+                    errors.Add(e.Message);
                     continue;
                 } catch (IOException e) {
-                    errors += e.Message;
+                    errors.Add(e.Message);
                     continue;
                 }
 
@@ -103,10 +109,10 @@ namespace codeCleaner.BLL {
                                          });
                     }
                 } catch (AggregateException ae) {
-                    ae.Handle((ex) => {
-                        if (ex is UnauthorizedAccessException) {
+                    ae.Handle((e) => {
+                        if (e is UnauthorizedAccessException) {
                             // Here we just output a message and go on.
-                            errors += ex.Message;
+                            errors.Add(e.Message);
                             return true;
                         }
                         // Handle other exceptions here if necessary...
@@ -118,19 +124,7 @@ namespace codeCleaner.BLL {
                 foreach (string str in subDirs)
                     dirs.Push(str);
             }
-            MessageBox.Show(string.Format("GetFilesInfo() Processed {0} files in {1} milliseconds" + Environment.NewLine + errors, fileCount, sw.ElapsedMilliseconds));
+            //MessageBox.Show(string.Format("GetFilesInfo() Processed {0} files in {1} milliseconds" + Environment.NewLine + errors, fileCount, sw.ElapsedMilliseconds));
         }
     }
 }
-
-//static string CalculateMD5(string filename)
-//{
-//    using (var md5 = MD5.Create())
-//    {
-//        using (var stream = File.OpenRead(filename))
-//        {
-//            var hash = md5.ComputeHash(stream);
-//            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-//        }
-//    }
-//}
