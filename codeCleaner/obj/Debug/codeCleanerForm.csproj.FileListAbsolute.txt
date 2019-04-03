@@ -1,0 +1,14 @@
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleaner.exe.config
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleaner.exe
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleaner.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.csprojAssemblyReference.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleaner.Properties.Resources.resources
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.csproj.GenerateResource.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.csproj.CoreCompileInputs.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleaner.exe
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleaner.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleanerConsole.exe
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleanerConsole.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleanerConsole.exe.config
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.csproj.CopyComplete
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.GUI.myClass.resources

@@ -1,6 +1,6 @@
-﻿namespace codeCleaner.GUI
+﻿namespace codeCleanerForm.GUI
 {
-    partial class codeCleanerForm
+    partial class codeCleanerWinForm
     {
         /// <summary>
         /// Required designer variable.
@@ -108,6 +108,7 @@
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Code Cleaner v.0.014 - AP 2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.codeCleanerForm_FormClosing);
             this.Load += new System.EventHandler(this.codeCleanerForm_Load);
             this.Shown += new System.EventHandler(this.codeCleanerForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).EndInit();

@@ -46,24 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\Compare.cs" />
-    <Compile Include="BLL\extension.cs" />
-    <Compile Include="Helpers\DatatableHelpers.cs" />
-    <Compile Include="Models\Files.cs" />
-    <Compile Include="BLL\ReadDirectory.cs" />
-    <Compile Include="BLL\Utilities.cs" />
-    <Compile Include="DAL\RepositoryDB.cs" />
-    <Compile Include="DAL\UtilitiesDB.cs" />
-    <Compile Include="GUI\codeCleanerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\codeCleanerForm.Designer.cs">
-      <DependentUpon>codeCleanerForm.cs</DependentUpon>
+    <Compile Include="GUI\codeCleanerWinForm.cs" />
+    <Compile Include="GUI\codeCleanerWinForm.Designer.cs">
+      <DependentUpon>codeCleanerWinForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GUI\codeCleanerForm.resx">
-      <DependentUpon>codeCleanerForm.cs</DependentUpon>
+    <Compile Include="BLL\Utilities.cs" />
+    <EmbeddedResource Include="GUI\codeCleanerWinForm.resx">
+      <DependentUpon>codeCleanerWinForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -87,6 +78,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\codeCleanerConsole\codeCleanerConsole.csproj">
+      <Project>{76eaa9de-dd32-4633-84da-897c503fd8dc}</Project>
+      <Name>codeCleanerConsole</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

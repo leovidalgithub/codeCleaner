@@ -1,0 +1,7 @@
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\codeCleanerConsole.exe.config
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\codeCleanerConsole.exe
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\codeCleanerConsole.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csproj.CoreCompileInputs.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.exe
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csprojAssemblyReference.cache

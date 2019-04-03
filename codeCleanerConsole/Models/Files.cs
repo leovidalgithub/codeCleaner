@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace codeCleaner.BLL {
+namespace codeCleanerConsole.Models {
     public class Files : IEquatable<Files> {
 
         public int CodeCleanerInfoID { get; set; }
@@ -9,12 +9,12 @@ namespace codeCleaner.BLL {
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public DateTime Accessed { get; set; }
-        public float Size { get; set; }
+        public long Size { get; set; }
         public int Changes { get; set; }
         public bool Active { get; set; }
 
         public Files() {}
-        public Files(int _codeCleanerInfoID, string _path, DateTime _created, DateTime _modified, DateTime _accessed, float _size) {
+        public Files(int _codeCleanerInfoID, string _path, DateTime _created, DateTime _modified, DateTime _accessed, long _size) {
             this.CodeCleanerInfoID = _codeCleanerInfoID;
             this.Path = _path;
             this.Created = _created;

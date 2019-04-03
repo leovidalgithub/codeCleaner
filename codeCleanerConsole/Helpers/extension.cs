@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeCleaner.ExtensionMethods {
+namespace codeCleanerConsole.Helpers {
     public static class DateExtensions {
         /// <summary>
         /// DateTime extension method.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace codeCleaner.Properties {
+namespace codeCleanerConsole.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,17 @@ namespace codeCleaner.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=173.213.224.191;Initial Catalog=DBCleaningBackup;Persist Security Inf" +
+            "o=True;User ID=datatail02;Password=datatail02")]
+        public string codeCleanerStringConnection {
+            get {
+                return ((string)(this["codeCleanerStringConnection"]));
             }
         }
     }

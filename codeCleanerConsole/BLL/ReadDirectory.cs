@@ -6,43 +6,55 @@ using System.IO;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Linq;
-using codeCleaner.ExtensionMethods;
-using codeCleaner.DAL;
+using codeCleanerConsole.Helpers;
+using codeCleanerConsole.DAL;
+using codeCleanerConsole.Models;
+using System.Diagnostics;
 
-namespace codeCleaner.BLL {
-    public static class ReadDirectory {
-        private static List<string> errors = new List<string>();
+namespace codeCleanerConsole.BLL
+{
+    public static class ReadDirectory
+    {
 
-        public static List<Files> GetFilesInfo() {
+        public static List<Files> GetCurrentFiles()
+        {
             ConcurrentBag<Files> allFiles = new ConcurrentBag<Files>();
             DataTable CodeCleanerInfo = new DataTable();
             CodeCleanerInfo = RepositoryDB.GetCodeCleanerInfoDB();
+            var swCurrent = Stopwatch.StartNew();
 
-            foreach (DataRow item in CodeCleanerInfo.Rows) {
+            foreach (DataRow item in CodeCleanerInfo.Rows)
+            {
                 int CodeCleanerInfoID = Int32.Parse(item["ID"].ToString().Trim());
                 string SearchRootFolder = item["SearchRootFolder"].ToString().Trim();
 
-                try {
-                    TraverseTreeParallelForEach(@SearchRootFolder, f => { 
-                        try {
+                try
+                {
+                    TraverseTreeParallelForEach(@SearchRootFolder, f =>
+                    {
+                        try
+                        {
                             FileInfo ff = new FileInfo(f);
                             allFiles.Add(new Files(CodeCleanerInfoID, ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
                         }
-                        catch (FileNotFoundException e) { errors.Add(e.Message); }
-                        catch (IOException e) { errors.Add(e.Message); }
-                        catch (UnauthorizedAccessException e) { errors.Add(e.Message); }
-                        catch (SecurityException e) { errors.Add(e.Message); }
-                    });                                         }
-                catch (ArgumentException e) {
-                    errors.Add("Directory " + @SearchRootFolder + " does not exist. " + e.Message);
+                        catch (FileNotFoundException ex) { Program.logs.ErrorGettingCurrent += "#010 - " + ex.Message; }
+                        catch (IOException ex) { Program.logs.ErrorGettingCurrent += "#011 - " + ex.Message; }
+                        catch (UnauthorizedAccessException ex) { Program.logs.ErrorGettingCurrent += "#012 - " + ex.Message; }
+                        catch (SecurityException ex) { Program.logs.ErrorGettingCurrent += "#013 - " + ex.Message; }
+                    });
+                }
+                catch (ArgumentException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#014 - Directory does not exist: " + @SearchRootFolder + " - " + ex.Message;
                 }
             }
+            Program.logs.ElapsedTimeCurrent = swCurrent.ElapsedMilliseconds;
             return allFiles.ToList();
         }
 
-        public static void TraverseTreeParallelForEach(string root, Action<string> action) {
+        private static void TraverseTreeParallelForEach(string root, Action<string> action)
+        {
             //Count of files traversed and timer for diagnostic output
             int fileCount = 0;
             //var sw = Stopwatch.StartNew();
@@ -53,66 +65,89 @@ namespace codeCleaner.BLL {
             // Data structure to hold names of subfolders to be examined for files.
             Stack<string> dirs = new Stack<string>();
 
-            if (!Directory.Exists(root)) {
+            if (!Directory.Exists(root))
+            {
                 throw new ArgumentException();
             }
             dirs.Push(root);
 
-            while (dirs.Count > 0) {
+            while (dirs.Count > 0)
+            {
                 string currentDir = dirs.Pop();
                 string[] subDirs = { };
                 string[] files = { };
 
-                try {
+                try
+                {
                     subDirs = Directory.GetDirectories(currentDir);
                 }
                 // Thrown if we do not have discovery permission on the directory.
-                catch (UnauthorizedAccessException e) {
-                    errors.Add(e.Message);
+                catch (UnauthorizedAccessException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#015 - " + ex.Message;
                     continue;
                 }
                 // Thrown if another process has deleted the directory after we retrieved its name.
-                catch (DirectoryNotFoundException e) {
-                    errors.Add(e.Message);
+                catch (DirectoryNotFoundException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#016 - " + ex.Message;
                     continue;
                 }
 
-                try {
+                try
+                {
                     files = Directory.GetFiles(currentDir);
-                } catch (UnauthorizedAccessException e) {
-                    errors.Add(e.Message);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#017 - " + ex.Message;
                     continue;
-                } catch (DirectoryNotFoundException e) {
-                    errors.Add(e.Message);
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#018 - " + ex.Message;
                     continue;
-                } catch (IOException e) {
-                    errors.Add(e.Message);
+                }
+                catch (IOException ex)
+                {
+                    Program.logs.ErrorGettingCurrent += "#019 - " + ex.Message;
                     continue;
                 }
 
                 // Execute in parallel if there are enough files in the directory.
                 // Otherwise, execute sequentially.Files are opened and processed
                 // synchronously but this could be modified to perform async I/O.
-                try {
-                    if (files.Length < procCount) {
-                        foreach (var file in files) {
+                try
+                {
+                    if (files.Length < procCount)
+                    {
+                        foreach (var file in files)
+                        {
                             action(file);
                             fileCount++;
                         }
-                    } else {
-                        Parallel.ForEach(files, () => 0, (file, loopState, localCount) => {
+                    }
+                    else
+                    {
+                        Parallel.ForEach(files, () => 0, (file, loopState, localCount) =>
+                        {
                             action(file);
                             return (int)++localCount;
                         },
-                                         (c) => {
+                                         (c) =>
+                                         {
                                              Interlocked.Add(ref fileCount, c);
                                          });
                     }
-                } catch (AggregateException ae) {
-                    ae.Handle((e) => {
-                        if (e is UnauthorizedAccessException) {
+                }
+                catch (AggregateException ae)
+                {
+                    ae.Handle((ex) =>
+                    {
+                        if (ex is UnauthorizedAccessException)
+                        {
                             // Here we just output a message and go on.
-                            errors.Add(e.Message);
+                            Program.logs.ErrorGettingCurrent += "#020 - " + ex.Message;
                             return true;
                         }
                         // Handle other exceptions here if necessary...
@@ -124,7 +159,7 @@ namespace codeCleaner.BLL {
                 foreach (string str in subDirs)
                     dirs.Push(str);
             }
-            //MessageBox.Show(string.Format("GetFilesInfo() Processed {0} files in {1} milliseconds" + Environment.NewLine + errors, fileCount, sw.ElapsedMilliseconds));
+            Program.logs.FilesCountCurrent += fileCount;
         }
     }
 }

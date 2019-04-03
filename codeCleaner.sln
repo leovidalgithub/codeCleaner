@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeCleaner", "codeCleaner\codeCleaner.csproj", "{93602582-07A4-4105-B886-7C1E14659DDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeCleanerForm", "codeCleaner\codeCleanerForm.csproj", "{93602582-07A4-4105-B886-7C1E14659DDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeCleanerConsole", "codeCleanerConsole\codeCleanerConsole.csproj", "{76EAA9DE-DD32-4633-84DA-897C503FD8DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{93602582-07A4-4105-B886-7C1E14659DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93602582-07A4-4105-B886-7C1E14659DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93602582-07A4-4105-B886-7C1E14659DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76EAA9DE-DD32-4633-84DA-897C503FD8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76EAA9DE-DD32-4633-84DA-897C503FD8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76EAA9DE-DD32-4633-84DA-897C503FD8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76EAA9DE-DD32-4633-84DA-897C503FD8DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
