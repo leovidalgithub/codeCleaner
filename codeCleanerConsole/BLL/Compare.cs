@@ -6,7 +6,6 @@ using codeCleanerConsole.Models;
 
 namespace codeCleanerConsole.BLL
 {
-
     public static class Compare
     {
         public static List<Files> CompareFiles(List<Files> CurrentRunFiles, List<Files> PreviousRunFiles)
@@ -45,13 +44,13 @@ namespace codeCleanerConsole.BLL
                     }
                 }
                 ChangedFiles.AddRange(previousMissingFiles);
-                Program.logs.FilesCountNew += newFilesCount;
+                Program.logs.FilesCountNew     += newFilesCount;
                 Program.logs.FilesCountChanged += ChangedFiles.Count;
                 Program.logs.FilesCountMissing += previousMissingFiles.Count;
             }
             catch (Exception ex)
             {
-                Program.logs.ErrorComparing += "#001 - " + ex.Message;
+                Program.logs.ErrorComparing += "#001 - " + ex.GetType().Name + " = " + ex.Message;
             }
             Program.logs.ElapsedTimeCompare = swCompare.ElapsedMilliseconds;
             return ChangedFiles;

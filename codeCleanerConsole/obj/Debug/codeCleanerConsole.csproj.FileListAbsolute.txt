@@ -4,4 +4,17 @@ C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csproj.CoreCompileInputs.cache
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.exe
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\MoreLinq.dll
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\System.ValueTuple.dll
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\MoreLinq.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\MoreLinq.xml
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\System.ValueTuple.xml
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csproj.CopyComplete
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csprojAssemblyReference.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\codeCleanerConsole.exe.manifest
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\bin\Debug\codeCleanerConsole.application
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.Properties.Resources.resources
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.csproj.GenerateResource.cache
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.TrustInfo.xml
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.exe.manifest
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleanerConsole\obj\Debug\codeCleanerConsole.application

@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace codeCleanerConsole.DAL {
     public static class UtilitiesDB {

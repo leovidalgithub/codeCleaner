@@ -12,3 +12,8 @@ C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCle
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\codeCleanerConsole.exe.config
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.csproj.CopyComplete
 C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\obj\Debug\codeCleanerForm.GUI.myClass.resources
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\MoreLinq.dll
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\System.ValueTuple.dll
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\MoreLinq.pdb
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\MoreLinq.xml
+C:\Users\User\Dropbox\microsoft.net\c#\codeCleaner\codeCleaner\bin\Debug\System.ValueTuple.xml

@@ -5,9 +5,9 @@
     <Setting Name="codeCleanerStringConnection" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=173.213.224.191;Initial Catalog=DBCleaningBackup;Persist Security Info=True;User ID=datatail02;Password=datatail02&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=10.11.73.90;Initial Catalog=DBCleaningBackup;Persist Security Info=True;User ID=datatail02;Password=datatail02; Connection Timeout=300&lt;/ConnectionString&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=173.213.224.191;Initial Catalog=DBCleaningBackup;Persist Security Info=True;User ID=datatail02;Password=datatail02</Value>
+      <Value Profile="(Default)">Data Source=10.11.73.90;Initial Catalog=DBCleaningBackup;Persist Security Info=True;User ID=datatail02;Password=datatail02; Connection Timeout=300</Value>
     </Setting>
   </Settings>
 </SettingsFile>

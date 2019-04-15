@@ -16,10 +16,9 @@ namespace codeCleanerConsole.BLL
 {
     public static class ReadDirectory
     {
-
         public static List<Files> GetCurrentFiles()
         {
-            ConcurrentBag<Files> allFiles = new ConcurrentBag<Files>();
+            ConcurrentDictionary<string, Files> allCurrentFiles = new ConcurrentDictionary<string, Files>();
             DataTable CodeCleanerInfo = new DataTable();
             CodeCleanerInfo = RepositoryDB.GetCodeCleanerInfoDB();
             var swCurrent = Stopwatch.StartNew();
@@ -35,29 +34,27 @@ namespace codeCleanerConsole.BLL
                     {
                         try
                         {
-                            FileInfo ff = new FileInfo(f);
-                            allFiles.Add(new Files(CodeCleanerInfoID, ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
+                            FileInfo ff = new FileInfo(f);                             
+                            allCurrentFiles.TryAdd(ff.FullName, new Files(CodeCleanerInfoID, ff.FullName, ff.CreationTime.TrimMilliseconds(), ff.LastWriteTime.TrimMilliseconds(), ff.LastAccessTime.TrimMilliseconds(), ff.Length));
                         }
-                        catch (FileNotFoundException ex) { Program.logs.ErrorGettingCurrent += "#010 - " + ex.Message; }
-                        catch (IOException ex) { Program.logs.ErrorGettingCurrent += "#011 - " + ex.Message; }
-                        catch (UnauthorizedAccessException ex) { Program.logs.ErrorGettingCurrent += "#012 - " + ex.Message; }
-                        catch (SecurityException ex) { Program.logs.ErrorGettingCurrent += "#013 - " + ex.Message; }
+                        catch (FileNotFoundException ex)       { Program.logs.ErrorGettingCurrent += "#010 - " + ex.GetType().Name + " = " + ex.Message; }
+                        catch (IOException ex)                 { Program.logs.ErrorGettingCurrent += "#011 - " + ex.GetType().Name + " = " + ex.Message; }
+                        catch (UnauthorizedAccessException ex) { Program.logs.ErrorGettingCurrent += "#012 - " + ex.GetType().Name + " = " + ex.Message; }
+                        catch (SecurityException ex)           { Program.logs.ErrorGettingCurrent += "#013 - " + ex.GetType().Name + " = " + ex.Message; }
                     });
                 }
                 catch (ArgumentException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#014 - Directory does not exist: " + @SearchRootFolder + " - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#014 - Directory does not exist: " + @SearchRootFolder + " - " + ex.GetType().Name + " = " + ex.Message;
                 }
             }
             Program.logs.ElapsedTimeCurrent = swCurrent.ElapsedMilliseconds;
-            return allFiles.ToList();
+            return allCurrentFiles.Values.ToList<Files>();
         }
 
         private static void TraverseTreeParallelForEach(string root, Action<string> action)
         {
-            //Count of files traversed and timer for diagnostic output
             int fileCount = 0;
-            //var sw = Stopwatch.StartNew();
 
             // Determine whether to parallelize file processing on each folder based on processor count.
             int procCount = Environment.ProcessorCount;
@@ -84,13 +81,13 @@ namespace codeCleanerConsole.BLL
                 // Thrown if we do not have discovery permission on the directory.
                 catch (UnauthorizedAccessException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#015 - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#015 - " + ex.GetType().Name + " = " + ex.Message;
                     continue;
                 }
                 // Thrown if another process has deleted the directory after we retrieved its name.
                 catch (DirectoryNotFoundException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#016 - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#016 - " + ex.GetType().Name + " = " + ex.Message;
                     continue;
                 }
 
@@ -100,17 +97,17 @@ namespace codeCleanerConsole.BLL
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#017 - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#017 - " + ex.GetType().Name + " = " + ex.Message;
                     continue;
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#018 - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#018 - " + ex.GetType().Name + " = " + ex.Message;
                     continue;
                 }
                 catch (IOException ex)
                 {
-                    Program.logs.ErrorGettingCurrent += "#019 - " + ex.Message;
+                    Program.logs.ErrorGettingCurrent += "#019 - " + ex.GetType().Name + " = " + ex.Message;
                     continue;
                 }
 
@@ -147,7 +144,7 @@ namespace codeCleanerConsole.BLL
                         if (ex is UnauthorizedAccessException)
                         {
                             // Here we just output a message and go on.
-                            Program.logs.ErrorGettingCurrent += "#020 - " + ex.Message;
+                            Program.logs.ErrorGettingCurrent += "#020 - " + ex.GetType().Name + " = " + ex.Message;
                             return true;
                         }
                         // Handle other exceptions here if necessary...
